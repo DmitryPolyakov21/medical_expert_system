@@ -1,6 +1,6 @@
 FROM python:3.9-alpine
 
-RUN apt-get update && apt-get install -y curl
+RUN apk add --no-cache curl
 
 # Устанавливаем системные зависимости для psycopg2
 RUN apk add --no-cache python3-dev musl-dev
