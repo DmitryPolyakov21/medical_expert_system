@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  db_medical_advicer:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: polyakov_dpo42
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_medical_advicer
+    volumes:
+      - postgres_data_medical_advicer:/var/lib/postgresql/data
+
+  db_medical_analizer:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: polyakov_dpo42
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_medical_analizer
+    volumes:
+      - postgres_data_medical_analizer:/var/lib/postgresql/data
+
+  web1:
+    build: ./medical_advicer
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db_medical_advicer
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      ANALYTICS_SERVICE_URL: "http://web2:8001"
+      LOG_DIR: /app/logs
+      PYTHONUNBUFFERED: 1
+
+  web2:
+    build: ./medical_analizer
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db_medical_analizer
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      LOG_DIR: /app/logs
+      PYTHONUNBUFFERED: 1
+
+volumes:
+  postgres_data_medical_advicer:
+  postgres_data_medical_analizer:
+

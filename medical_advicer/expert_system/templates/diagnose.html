@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Диагностика заболеваний</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c62828;
+        }
+        
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .symptom-item {
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .symptom-item:hover {
+            background-color: #f0f4f8;
+        }
+        
+        input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 10px;
+        }
+        
+        label {
+            cursor: pointer;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .stats-link {
+            display: inline-block;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 500;
+            padding: 8px 15px;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .stats-link:hover {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Отметьте ваши симптомы:</h1>
+    
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for symptom in symptoms %}
+        <div class="symptom-item">
+            <input type="checkbox" 
+                   id="symptom_{{ symptom.id }}"
+                   name="symptoms" 
+                   value="{{ symptom.id }}">
+            <label for="symptom_{{ symptom.id }}">
+                {{ symptom.name }}
+            </label>
+        </div>
+        {% endfor %}
+        
+        <button type="submit">Проверить симптомы</button>
+    </form>
+    
+    <a class="stats-link" href="{% url 'region_stats' %}">Статистика по регионам</a>
+</body>
+</html>

@@ -1,0 +1,5 @@
+Django==4.1.7
+psycopg2-binary==2.9.5
+djangorestframework==3.14.0
+geoip2==4.6.0
+

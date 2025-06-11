@@ -1,0 +1,7 @@
+Django==4.1.7
+psycopg2-binary==2.9.5
+experta==1.9.4
+djangorestframework==3.14.0
+requests==2.31.0
+pytest==8.4.0
+pytest-django==4.11.1

@@ -1,0 +1,10 @@
+2025-06-11 11:37:41,155 INFO autoreload Watching for file changes with StatReloader
+2025-06-11 11:37:41,664 INFO autoreload Watching for file changes with StatReloader
+2025-06-11 12:36:47,057 INFO autoreload Watching for file changes with StatReloader
+2025-06-11 12:40:54,324 INFO autoreload Watching for file changes with StatReloader
+2025-06-11 12:40:54,905 INFO autoreload Watching for file changes with StatReloader
+2025-06-11 12:41:48,161 INFO autoreload Watching for file changes with StatReloader
+2025-06-11 12:41:48,365 INFO autoreload Watching for file changes with StatReloader
+2025-06-11 12:42:06,517 INFO basehttp "POST /api/v1/diagnosis HTTP/1.1" 201 148
+2025-06-11 12:42:06,669 INFO basehttp "GET /api/v1/stats/region/Moscow HTTP/1.1" 200 50
+2025-06-11 12:42:06,699 INFO basehttp "GET /api/v1/stats/region/%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0 HTTP/1.1" 200 56

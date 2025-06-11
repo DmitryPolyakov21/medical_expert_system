@@ -1,0 +1,21 @@
+name: Integration Tests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: docker-compose -f docker-compose.yml up -d
+
+      - name: Wait for databases
+        run: |
+          docker-compose -f docker-compose.yml exec db_medical_advicer pg_isready -U polyakov_dpo42
+          docker-compose -f docker-compose.yml exec db_medical_analizer pg_isready -U polyakov_dpo42
+
+      - name: Run tests
+        run: |
+          docker-compose exec web1 pytest /app/expert_system/tests/integration_tests/ -v
+
