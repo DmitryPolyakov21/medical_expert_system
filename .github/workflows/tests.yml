@@ -8,17 +8,22 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Docker Compose
-        run: |          
+        run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose -f docker-compose.yml up -d
 
-      - name: Wait for databases
+      - name: Wait for services to be ready
         run: |
-          docker-compose -f docker-compose.yml exec db_medical_advicer pg_isready -U polyakov_dpo42
-          docker-compose -f docker-compose.yml exec db_medical_analizer pg_isready -U polyakov_dpo42
+          # Ждем готовности БД
+          docker-compose exec -T db_medical_advicer pg_isready -U polyakov_dpo42
+          docker-compose exec -T db_medical_analizer pg_isready -U polyakov_dpo42
+          
+          # Ждем готовности Django приложений
+          until docker-compose exec -T web1 curl -s http://web1:8000/health-check; do sleep 1; done
+          until docker-compose exec -T web2 curl -s http://web2:8001/health-check; do sleep 1; done
+          sleep 5  # Дополнительная задержка на всякий случай
 
       - name: Run tests
         run: |
-          docker-compose exec web1 pytest /app/expert_system/tests/integration_tests/ -v
-
+          docker-compose exec -T web1 pytest /app/expert_system/tests/integration_tests/ -v

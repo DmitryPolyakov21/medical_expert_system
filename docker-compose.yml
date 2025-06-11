@@ -43,6 +43,11 @@ services:
       ANALYTICS_SERVICE_URL: "http://web2:8001"
       LOG_DIR: /app/logs
       PYTHONUNBUFFERED: 1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health-check"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   web2:
     build: ./medical_analizer
@@ -57,6 +62,11 @@ services:
     environment:
       LOG_DIR: /app/logs
       PYTHONUNBUFFERED: 1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health-check"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data_medical_advicer:
